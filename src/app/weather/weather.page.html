@@ -1,6 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Погода сейчас в {{place.name}} </ion-title>
+    <ion-title *ngIf="place">Погода сейчас в {{place.name}} </ion-title>
+    <ion-button slot='end' (click)="changePlace()" ><ion-icon name='settings'></ion-icon></ion-button>
   </ion-toolbar>
 </ion-header>
 

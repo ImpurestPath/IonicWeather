@@ -3,6 +3,7 @@ import { PlaceService } from "../place.service";
 import { WeatherService } from "../weather.service";
 import { Place } from "../place";
 import { take } from "rxjs/operators";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-weather",
@@ -15,7 +16,8 @@ export class WeatherPage implements OnInit {
   weatherConditions: string;
   constructor(
     private placeService: PlaceService,
-    private weatherService: WeatherService
+    private weatherService: WeatherService,
+    private router: Router
   ) {}
 
   getConditions(weather) {
@@ -90,5 +92,9 @@ export class WeatherPage implements OnInit {
       this.weatherConditions = this.getConditions(this.weather);
     });
     
+  }
+
+  changePlace(){
+    this.router.navigateByUrl('home') ;
   }
 }
