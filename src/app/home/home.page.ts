@@ -9,44 +9,15 @@ import { Router } from '@angular/router';
   styleUrls: ["home.page.scss"]
 })
 export class HomePage implements OnInit {
-  GoogleAutocomplete: google.maps.places.AutocompleteService;
-  autocomplete: { input: string };
-  autocompleteItems: any[];
-  location: any;
-  placeid: any;
-
+  input: any;
   constructor(public zone: NgZone, private placeService: PlaceService, private router: Router) {
-    this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
-    this.autocomplete = { input: "" };
-    this.autocompleteItems = [];
+
   }
 
   ngOnInit() {}
-  updateSearchResults() {
-    if (this.autocomplete.input == "") {
-      this.autocompleteItems = [];
-      return;
-    }
-    this.GoogleAutocomplete.getPlacePredictions(
-      { input: this.autocomplete.input },
-      (predictions, status) => {
-        this.autocompleteItems = [];
-        this.zone.run(() => {
-          predictions.forEach(prediction => {
-            this.autocompleteItems.push(prediction);
-          });
-        });
-      }
-    );
-  }
-  selectSearchResult(item) {
-    console.log(item);
-    this.location = item;
-    this.placeid = this.location.place_id;
-    console.log("placeid" + this.placeid);
-  }
+  
   GoTo() {
-    this.placeService.setGooglePlace(this.location);
+    this.placeService.setPlace(this.input);
     this.router.navigateByUrl('weather')
   }
 }

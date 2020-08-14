@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class WeatherPage implements OnInit {
   place: Place;
   weather: any;
+  advice: string;
   weatherConditions: string;
   constructor(
     private placeService: PlaceService,
@@ -20,8 +21,11 @@ export class WeatherPage implements OnInit {
     private router: Router
   ) {}
 
-  getConditions(weather) {
-    switch (this.weather.fact.condition) {
+
+
+  
+  getConditions(condition) {
+    switch (condition) {
       case "clear":
         return "ясно";
         break;
@@ -34,6 +38,7 @@ export class WeatherPage implements OnInit {
       case "overcast":
         return "пасмурно";
         break;
+      case "light-rain":
       case "partly-cloudy-and-light-rain":
         return "небольшой дождь";
         break;
@@ -77,9 +82,60 @@ export class WeatherPage implements OnInit {
         return "снег";
         break;
       default:
-        return "";
+        return "что-то неизвестное";
         break;
     }
+  }
+
+  getAdvice(condition, temperature){
+    let answer = ""
+    if (temperature < 10){
+      answer += "тепло одеться и"
+    }
+    else if (temperature < 20) {
+      answer += "легко одеться и"
+    }
+    else {
+      answer += "больше пить и"
+    }
+    switch (condition) {
+      case "clear":
+      case "partly-cloudy":
+        answer += " наслаждаться солнцем";
+        break;
+      case "cloudy":
+        answer +=  " рассматривать облака";
+        break;
+      case "overcast":
+        answer += " не бояться солнечного удара";
+        break;
+      case "cloudy-and-light-rain":
+      case "light-rain":
+      case "partly-cloudy-and-light-rain":
+      case "partly-cloudy-and-rain":
+      case "overcast-and-light-rain":    
+      case "cloudy-and-rain":
+      case "overcast-and-wet-snow":      
+      case "overcast-and-rain":         
+        answer +=  " взять с собой зонт";
+        break;
+      case "overcast-thunderstorms-with-rain":
+        answer +=  " лучше никуда не выходить";
+        break;
+      case "partly-cloudy-and-light-snow":
+      case "cloudy-and-light-snow":
+      case "overcast-and-light-snow":
+        answer +=  " ловить снежинки"
+        break;
+      case "overcast-and-snow":
+      case "partly-cloudy-and-snow":
+      case "cloudy-and-snow":
+        answer +=  ", если возможно, лепить снеговика";
+        break;
+      default:
+        break;
+    }
+    return answer;
   }
   async ngOnInit() {
     this.placeService.getFormattedPlace().subscribe(async data => {
@@ -89,7 +145,9 @@ export class WeatherPage implements OnInit {
       .pipe(take(1))
       .toPromise();
       console.log(this.weather);
-      this.weatherConditions = this.getConditions(this.weather);
+      console.log(this.weather.fact.condition)
+      this.weatherConditions = this.getConditions(this.weather.fact.condition);
+      this.advice = this.getAdvice(this.weather.fact.condition, this.weather.fact.feels_like)
     });
     
   }

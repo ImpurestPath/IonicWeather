@@ -1,14 +1,11 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-searchbar [(ngModel)]="autocomplete.input" (ionChange)="updateSearchResults()" placeholder="Поиск места"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="input"  placeholder="Поиск места"></ion-searchbar>
+    <ion-button (click)="GoTo()" slot="end">Выбрать место</ion-button>
   </ion-toolbar>
-  <ion-list [hidden]="autocompleteItems.length == 0">
-    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="selectSearchResult(item)">
-      {{ item.description }}
-    </ion-item>
-  </ion-list>
+
+  
 </ion-header>
 
-<ion-content (load)='onLoad()'> 
-    <ion-button (click)="GoTo()">Выбрать место</ion-button>
+<ion-content > 
 </ion-content>
